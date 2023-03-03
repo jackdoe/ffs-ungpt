@@ -10,21 +10,25 @@ function __summarize(api_key) {
     document.body.style.backgroundColor = "white";
     document.body.style.color = "black";
     document.body.style.fontFamily = 'monospace'
-    document.body.style.fontSize = "18px"
+    document.body.style.fontSize = "16px"
     document.body.style.margin = "auto"
     document.body.style.padding = "1rem"
-    document.body.style.maxWidth = "50rem"
+    document.body.style.maxWidth = "60rem"
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
             if (xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 var summary = response.choices[0].message.content;
-                
                 document.body.innerHTML = summary
             } else {
-                document.body.innerHTML = 'error asking.. check the console'
-                console.log(xhr)
+                try {
+                    var e = JSON.parse(xhr.responseText);
+                    document.body.innerHTML = e.error.message
+                } catch(e) {
+                    document.body.innerHTML = 'error asking.. check the console'
+                    console.log(xhr)
+                }
             }
         }
     }
