@@ -6,6 +6,7 @@ function __summarize(api_key) {
     xhr.open("POST", "https://api.openai.com/v1/chat/completions");
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', 'Bearer ' + api_key);
+    window.scrollTo({top: 0})
     document.body.innerHTML = 'asking...'
     document.body.style.backgroundColor = "white";
     document.body.style.color = "black";
@@ -21,7 +22,6 @@ function __summarize(api_key) {
                 var response = JSON.parse(xhr.responseText);
                 var summary = response.choices[0].message.content;
                 document.body.innerHTML = summary
-                window.scrollTo({top: 0})
             } else {
                 try {
                     var e = JSON.parse(xhr.responseText);
