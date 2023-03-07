@@ -21,6 +21,7 @@ function __summarize(api_key) {
                 var response = JSON.parse(xhr.responseText);
                 var summary = response.choices[0].message.content;
                 document.body.innerHTML = summary
+                window.scrollTo({top: 0})
             } else {
                 try {
                     var e = JSON.parse(xhr.responseText);

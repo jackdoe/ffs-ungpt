@@ -7,30 +7,31 @@
 I am preparing for the future when most of the internet is generated, so I wanted an extension that summarises pages, but I don't trust other extensions to inject js in the pages I open, so I had to write one myself. If you are like me and prefer to run only extensions you wrote (and ublock), this one is like 30 lines of code and you can vet it yourself, the gist of the injected code when you press the button:
 
 ```
-    function __summarize(api_key) {
-        var selection = window.getSelection().toString();
-        if (selection.length == 0) return;
-    
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://api.openai.com/v1/chat/completions");
-        xhr.setRequestHeader('Authorization', 'Bearer ' + api_key);
-        document.body.innerHTML = 'asking...'
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    var summary = response.choices[0].message.content;
-                    document.body.innerHTML = summary
-                    ...    
+function __summarize(api_key) {
+    var selection = window.getSelection().toString();
+    if (selection.length == 0) return;
 
-        var data = JSON.stringify({
-            "model": "gpt-3.5-turbo",
-            "messages": [
-                {"role": "system", "content": "Summarize the following text as if you are Richard Feynman"},
-                {"role": "user", "content": selection}
-            ]
-        });
-        xhr.send(data);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.openai.com/v1/chat/completions");
+    xhr.setRequestHeader('Authorization', 'Bearer ' + api_key);
+    document.body.innerHTML = 'asking...'
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                var summary = response.choices[0].message.content;
+                document.body.innerHTML = summary
+                ...    
+
+    var data = JSON.stringify({
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "Summarize the following text as if you are Richard Feynman"},
+            {"role": "user", "content": selection}
+        ]
+    });
+    xhr.send(data);
+    ...
 ```
 
 
